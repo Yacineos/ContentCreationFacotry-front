@@ -1,0 +1,36 @@
+<form (ngSubmit)="onSubmit()">
+  <div>
+    <input 
+      type="url" 
+      [formControl]="urlControl"
+      placeholder="Enter YouTube URL here" 
+      [class.error]="urlControl.invalid && urlControl.touched">
+    
+    @if (urlControl.invalid && urlControl.touched) {
+      <div class="error-message">
+        @if (urlControl.errors?.['required']) {
+          <span>URL is required</span>
+        }
+        @if (urlControl.errors?.['invalidYouTubeUrl']) {
+          <span>Please enter a valid YouTube URL</span>
+        }
+      </div>
+    }
+  </div>
+  
+  <button 
+    type="submit" 
+    [disabled]="isSubmitDisabled()">
+    @if (isLoading()) {
+      <span>Processing...</span>
+    } @else {
+      <span>Submit</span>
+    }
+  </button>
+  
+  @if (result()) {
+    <div [class]="hasError() ? 'result error' : 'result success'">
+      {{ result() }}
+    </div>
+  }
+</form>
